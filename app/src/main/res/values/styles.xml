@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="InputOutlineBoxV2" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/gray4</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="errorEnabled">true</item>
+        <item name="boxStrokeErrorColor">#ff0000</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextAppearance">@style/TextLabelError</item>
+        <item name="android:textColorHint">@color/gray1</item>
+    </style>
+
+
+    <style name="TextLabelError" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">@dimen/font_xsmall</item>
+        <item name="errorTextColor">#ff0000</item>
+        <item name="android:textColor">#ff0000</item>
+        <item name="helperTextTextColor">#ff0000</item>
+        <item name="hintTextColor">#ff0000</item>
+    </style>
+
+    <!-- Inputs styles -->
+    <style name="DefaultInputTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_general</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="DefaultInputTextStyle.Validation" parent="DefaultInputTextStyle">
+        <item name="autoValidate">true</item>
+        <item name="showErrorMessage">true</item>
+    </style>
+
+    <style name="DefaultInputTextStyle.Validation.Picker" parent="DefaultInputTextStyle.Validation">
+        <item name="autoValidate">true</item>
+        <item name="showErrorMessage">true</item>
+        <item name="android:paddingEnd">@dimen/dimen_padding_large</item>
+        <item name="android:drawableEnd">@drawable/ic_arrow_down_liv</item>
+        <item name="android:drawablePadding">@dimen/dimen_padding_medium</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">true</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:inputType">none</item>
+        <item name="android:cursorVisible">false</item>
+    </style>
+</resources>
