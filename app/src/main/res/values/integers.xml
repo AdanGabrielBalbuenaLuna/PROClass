@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="company_name_characters_min">1</integer>
+</resources>

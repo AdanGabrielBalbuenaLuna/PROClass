@@ -4,4 +4,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_tipo_de_vivienda">¿Tipo de vivienda?</string>
     <string name="tipo_vivienda">Clase de vivienda</string>
+    <string name="required_fields" translatable="false">* Campos obligatorios</string>
+    <string name="generic_invalid_message" translatable="false">El campo es inválido</string>
 </resources>
