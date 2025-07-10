@@ -1,21 +1,33 @@
 package com.example.spinnerex
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.spinnerex.databinding.FragmentBasicFormBinding
 import com.example.spinnerex.utils.ValidatorInputV2
 import com.example.spinnerex.utils.dialog.DialogFactory
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class BasicFormFragment : Fragment() {
+    private var labelsFromService = mutableListOf<LabelCredit2DTO>()
 
-    private val viviendaList = listOf(
-        "Propia",
-        "Rentada/Hipotecada",
-        "Familiar",
-        "Otro"
+    val urlBaseApiary = "https://private-f35346-superiorex.apiary-mock.com/"
+
+    private lateinit var viviendaOptionsMap: Map<String, String>
+    private lateinit var viviendaDisplayList: List<String>
+    private val FALLBACK_HOUSING_MAP: Map<String, String> = mapOf(
+        "1" to "Propia",
+        "2" to "Renta/Hipotecada",
+        "3" to "Familiar",
+        "0" to "Otro"
     )
 
     val validations = mutableListOf<ValidatorInputV2>()
@@ -23,6 +35,17 @@ class BasicFormFragment : Fragment() {
     private var _binding: FragmentBasicFormBinding? = null
     private val binding get() = _binding!!
 
+    // ✅ Declarar aquí para que esté disponible en toda la clase
+    private lateinit var apiaryService: LabelsService
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val retrofitApiaryObj = Retrofit.Builder()
+            .baseUrl(urlBaseApiary)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        apiaryService = retrofitApiaryObj.create(LabelsService::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,9 +81,11 @@ class BasicFormFragment : Fragment() {
                 // La lambda se ejecuta cuando el usuario selecciona un elemento, actualizando el campo de texto.
                 DialogFactory.showPickerDialg(
                     getString(R.string.title_tipo_de_vivienda),
-                    viviendaList, activity
+                    viviendaDisplayList, activity
                 ) { _, position ->
-                    editAddressTypeFragment.setText(viviendaList[position])
+                    editAddressTypeFragment.setText(viviendaDisplayList[position])
+                    println(viviendaDisplayList[position])
+                    Log.d("Dialogo", "Seleccionaste: $viviendaDisplayList[position]")
                 }
             }
         }
@@ -68,6 +93,49 @@ class BasicFormFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
+        lifecycleScope.launch {
+            try {
+                val response = apiaryService.getLabels()
+                if (response.isSuccessful) {
+                    labelsFromService = (response.body()?.data?.labels ?: mutableListOf()).toMutableList()
+                    Log.d("BasicFormFragment", "Labels cargados: ${labelsFromService.size}")
+
+                    // ✅ Ahora que labelsFromService está poblada, puedes obtener el valor
+                    val housingOptionsJsonString = getLabelValueByKey("CARD_APPLY_V2_NO_HIT_LIST_HOUSING")
+                    processHousingOptions(housingOptionsJsonString) // Nueva función para procesar esto
+                    initViews() // Inicializa las vistas aquí, después de todo.
+
+                    binding.internetConsume.text = labelsFromService.firstOrNull()?.value ?: "" // Mejor forma de acceder al primer elemento
+                } else {
+                    Log.e("BasicFormFragment", "Error en la respuesta de la API: ${response.code()} - ${response.message()}")
+                    processHousingOptions("") // Procesa con cadena vacía para usar fallback
+                    initViews() // Inicializa vistas con fallback si la API falla
+                }
+            } catch (e: Exception) {
+                Log.e("BasicFormFragment", "Excepción al llamar a la API de labels: ${e.message}", e)
+                processHousingOptions("") // Procesa con cadena vacía para usar fallback
+                initViews() // Inicializa vistas con fallback en caso de excepción
+            }
+        }
+
     }
+    private fun processHousingOptions(housingOptionsJsonString: String) {
+        try {
+            if (housingOptionsJsonString.isNotEmpty()) {
+                val type = object : TypeToken<Map<String, String>>() {}.type
+                viviendaOptionsMap = Gson().fromJson(housingOptionsJsonString, type)
+                if (viviendaOptionsMap.isEmpty()) {
+                    viviendaOptionsMap = FALLBACK_HOUSING_MAP
+                }
+            } else {
+                viviendaOptionsMap = FALLBACK_HOUSING_MAP
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            viviendaOptionsMap = FALLBACK_HOUSING_MAP
+        }
+        // Asegúrate de que viviendaDisplayList también se calcule aquí
+        viviendaDisplayList = viviendaOptionsMap.map { it.key }
+    }
+    private fun getLabelValueByKey(key: String) = labelsFromService.find { it.key == key }?.value ?: ""
 }
