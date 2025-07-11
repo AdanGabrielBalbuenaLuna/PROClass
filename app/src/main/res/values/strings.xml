@@ -6,4 +6,14 @@
     <string name="tipo_vivienda">Clase de vivienda</string>
     <string name="required_fields" translatable="false">* Campos obligatorios</string>
     <string name="generic_invalid_message" translatable="false">El campo es inválido</string>
+    <string name="name_edit_text">Name</string>
+
+    <!--Button -->
+    <string name="btn_request_ccard_next_step">Siguiente</string>
+    <string name="required">required</string>
+
+
+    <!--Edit Text -->
+    <string name="pass_hint">PassWord -_-</string>
+    <string name="email_hint">Email here!!</string>
 </resources>

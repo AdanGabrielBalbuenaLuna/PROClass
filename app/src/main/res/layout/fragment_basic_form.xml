@@ -43,14 +43,116 @@
             app:format="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginHorizontal="20dp"
+        android:id="@+id/email_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="13"
+        app:helperText="@string/required"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintTop_toBottomOf="@+id/input_address_type_fragment"
+        tools:layout_editor_absoluteX="0dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:inputType="textEmailAddress"
+            android:lines="1"
+            android:maxLength="16"
+            android:hint="@string/email_hint"
+            app:layout_constraintBottom_toTopOf="@+id/internet_consume"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+            app:layout_constraintVertical_bias="0.454"
+            tools:layout_editor_absoluteX="0dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginHorizontal="20dp"
+        app:helperText="@string/required"
+        app:helperTextTextColor="@android:color/holo_red_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_container">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:lines="1"
+            android:maxLength="16"
+            android:inputType="textPassword"
+            android:hint="password"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneContainer"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginHorizontal="20dp"
+        app:helperText="@string/required"
+        app:helperTextTextColor="@android:color/holo_red_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="10"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordContainer">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:lines="1"
+            android:inputType="number"
+            android:hint="phone_number"/>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/internet_consume"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_address_type_fragment"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="60dp"
+        android:text="NO HAY INTERNET"
+        app:flow_horizontalAlign="center"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next_step"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_next_step"
+        style="@style/OnePageCardView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_container_button"
+        android:layout_alignParentBottom="true"
+        app:cardElevation="@dimen/dimen_default_appbar_elevation"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <Button
+            android:id="@+id/button_next_step"
+            style="@style/MaterialButtonPinkRounded"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_button_next_step"
+            android:layout_margin="@dimen/dimen_margin_large"
+            android:text="@string/btn_request_ccard_next_step" />
+
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

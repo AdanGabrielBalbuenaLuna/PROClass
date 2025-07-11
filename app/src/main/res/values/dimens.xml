@@ -5,4 +5,10 @@
     <dimen name="dimen_margin_small">4dp</dimen>
     <dimen name="dimen_padding_large">12dp</dimen>
     <dimen name="dimen_padding_medium">8dp</dimen>
+
+    <!--Button Style-->
+    <dimen name="height_container_button">88dp</dimen>
+    <dimen name="dimen_default_appbar_elevation">4dp</dimen>
+    <dimen name="height_button_next_step">48dp</dimen>
+    <dimen name="dimen_margin_large">16dp</dimen>
 </resources>
