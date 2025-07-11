@@ -2,6 +2,7 @@ package com.example.spinnerex
 
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -117,7 +118,9 @@ class BasicFormFragment : Fragment() {
                 initViews() // Inicializa vistas con fallback en caso de excepción
             }
         }
-
+        editFocusListener()
+        passwordFocusListener()
+        phoneFocusListener()
     }
     private fun processHousingOptions(housingOptionsJsonString: String) {
         try {
@@ -138,4 +141,88 @@ class BasicFormFragment : Fragment() {
         viviendaDisplayList = viviendaOptionsMap.map { it.key }
     }
     private fun getLabelValueByKey(key: String) = labelsFromService.find { it.key == key }?.value ?: ""
+
+    private fun getFields() {
+        TODO("Validacion de dropView, opcional si es muy compleja")
+        TODO("Validacion de EditText") // Check
+        TODO("Copiar estilo de EditText") // Check
+        TODO("El gatillo es el boton, validar ahi")
+        TODO("Pasar info de fragment A a fragment B")
+    }
+
+    fun editFocusListener()
+    {
+        binding.emailEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                binding.emailContainer.helperText = validEmail()
+            }
+        }
+    }
+
+    private fun validEmail(): String? {
+        val emailText = binding.emailEditText.text.toString()
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailText).matches())
+        {
+            return "Invalid Email"
+        }
+        return null
+    }
+
+    private fun passwordFocusListener()
+    {
+        binding.passwordEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.passwordContainer.helperText = validPassword()
+            }
+        }
+    }
+
+    private fun validPassword(): String?
+    {
+        val passwordText = binding.passwordEditText.text.toString()
+        if(passwordText.length < 8)
+        {
+            return "Minimum 8 Character Password"
+        }
+        if(!passwordText.matches(".*[A-Z].*".toRegex())) // Si no hay una mayuscula
+        {
+            return "Must Contain 1 Upper-case Character"
+        }
+        if(!passwordText.matches(".*[a-z].*".toRegex())) // Si no hay una minuscula
+        {
+            return "Must Contain 1 Lower-case Character"
+        }
+        if(!passwordText.matches(".*[@#\$%^&+=].*".toRegex())) // Si no hay un caracter especial
+        {
+            return "Must Contain 1 Special Character (@#\$%^&+=)"
+        }
+
+        return null
+    }
+
+    private fun phoneFocusListener()
+    {
+        binding.phoneEditText.setOnFocusChangeListener { _, focused ->
+            if(!focused)
+            {
+                binding.phoneContainer.helperText = validPhone()
+            }
+        }
+    }
+
+    private fun validPhone(): String?
+    {
+        val phoneText = binding.phoneEditText.text.toString()
+        if(!phoneText.matches(".*[0-9].*".toRegex())) // Si no hay un numero
+        {
+            return "Must be all Digits"
+        }
+        if(phoneText.length != 10) // Si no hay 10 digitos
+        {
+            return "Must be 10 Digits"
+        }
+        return null
+    }
+
 }

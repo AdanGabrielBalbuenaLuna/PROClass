@@ -15,4 +15,9 @@
     <color name="teal">#008080</color>
     <color name="cyan">#00ffff</color>
     <color name="lime">#00ff00</color>
+
+    <!--Button Style-->
+    <color name="pale">#552166</color>
+    <color name="suburbia_hover">#3D0C41</color>
+    <color name="moradoSuburbia">#552166</color>
 </resources>
